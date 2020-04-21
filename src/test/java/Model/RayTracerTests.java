@@ -15,6 +15,6 @@ public class RayTracerTests {
 
         RayWorldContact actual = sut.getTrace(o, 1, 0, 10);
 
-        Assert.assertEquals(actual.hasContact(), false);
+        Assert.assertEquals(actual.hasContact(), true);
     }
 }
