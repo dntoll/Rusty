@@ -1,5 +1,6 @@
 package View;
 
+import Model.Ray;
 import Model.RayTracer;
 import Model.RayWorldContact;
 import Model.World;
@@ -38,7 +39,8 @@ public class RayTraceView {
         float fov = 90; //in degrees?
         int numRays = 100;
         for (int x = 0; x < numRays; x++) {
-            RayWorldContact contact = tracer.getTrace(world.getObserver(), fov, x, numRays);
+            Ray ray = tracer.getRay(world.getObserver(), fov, Math.sqrt(2), x, numRays);
+            RayWorldContact contact = tracer.trace(ray);
 
             if (contact.hasContact() ) {
                 Point2D contactModelPos = contact.getPosition();

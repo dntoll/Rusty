@@ -21,4 +21,13 @@ public class Observer {
     public Point2D getDirection() {
         return direction;
     }
+
+    public void setPosition(Point2D newPos) {
+        this.position = newPos;
+    }
+
+    public void setDirection(Point2D newDir) {
+
+        this.direction = newDir.normalize();
+    }
 }
