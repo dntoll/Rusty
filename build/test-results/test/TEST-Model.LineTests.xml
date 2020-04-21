@@ -1,7 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<testsuite name="Model.LineTests" tests="1" skipped="0" failures="0" errors="0" timestamp="2020-04-21T08:16:17" hostname="WB-01389" time="0.0">
-  <properties/>
-  <testcase name="ConstructorShouldSetStartAndEnd" classname="Model.LineTests" time="0.0"/>
-  <system-out><![CDATA[]]></system-out>
-  <system-err><![CDATA[]]></system-err>
-</testsuite>
