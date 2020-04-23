@@ -6,17 +6,34 @@ import javafx.geometry.Point2D;
 import java.util.ArrayList;
 
 public class Level {
-    private ArrayList<Line> lines = new ArrayList<Line>();
+    private ArrayList<Wall> walls = new ArrayList<Wall>();
+    private ArrayList<Light> lights = new ArrayList<Light>();
 
     public Level() {
 
     }
 
-    public void addLine(Line toBeAdded) {
-        lines.add(toBeAdded);
+    public void addWall(Wall toBeAdded) {
+        walls.add(toBeAdded);
     }
 
-    public Line[] getLines() {
-        return (Line[]) this.lines.toArray(new Line[0]);
+    public void addLight(Light toBeAdded) {
+        lights.add(toBeAdded);
+    }
+
+    public Wall[] getWalls() {
+        return (Wall[]) this.walls.toArray(new Wall[0]);
+    }
+
+    public Light[] getLights() { return this.lights.toArray(new Light[0]); }
+
+    public void addBox(Point2D topLeft, Point2D bottomRight, Material material) {
+        var bottomLeft = new Point2D(topLeft.getX(),bottomRight.getY());
+        var topRight = new Point2D(bottomRight.getX(),topLeft.getY());
+
+        addWall(new Wall(topLeft, topRight, material));
+        addWall(new Wall(topLeft, bottomLeft, material));
+        addWall(new Wall(bottomLeft, bottomRight, material));
+        addWall(new Wall(topRight, bottomRight, material));
     }
 }

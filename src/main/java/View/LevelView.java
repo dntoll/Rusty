@@ -1,9 +1,6 @@
 package View;
 
-import Model.Level;
-import Model.Line;
-import Model.Observer;
-import Model.World;
+import Model.*;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
 
@@ -27,6 +24,7 @@ public class LevelView {
 
         drawLevel(gc, world.getLevel());
         drawObserver(gc, world.getObserver());
+
 
     }
 
@@ -55,12 +53,21 @@ public class LevelView {
         gc.setStroke(Color.GREEN);
         gc.setLineWidth(1);
 
-        for (Line l : level.getLines())
+        for (Wall l : level.getWalls())
         {
 
             var windowStartPos = camera.toLevelView(l.start);
             var windowEndPos = camera.toLevelView(l.end);
             gc.strokeLine(windowStartPos.getX(), windowStartPos.getY(), windowEndPos.getX(), windowEndPos.getY());
+        }
+
+        for (Light l : level.getLights()) {
+            gc.setFill(Color.YELLOW);
+
+            var pos = l.getPosition();
+            var windowCenterPos = camera.toLevelView(pos);
+            var scale = 0.1 * camera.getScale();
+            gc.fillOval(windowCenterPos.getX() - scale/2.0, windowCenterPos.getY() - scale/2, scale, scale);
         }
     }
 

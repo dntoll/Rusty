@@ -24,8 +24,8 @@ public class JavaFXView   {
         Group root = new Group();
         Canvas canvas = new Canvas(400, 400);
         GraphicsContext gc = canvas.getGraphicsContext2D();
-        map.drawShapes(200,200, 200, 200, gc);
-        ray.drawShapes(200,0, 200, 200, gc);
+        map.drawShapes(0,0, 200, 200, gc);
+        ray.drawShapes(200,200, 200, 200, gc);
         root.getChildren().add(canvas);
         stage.setScene(new Scene(root));
         stage.show();

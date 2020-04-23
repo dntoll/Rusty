@@ -12,15 +12,15 @@ public class LevelTests {
     public void getLinesShouldReturnEmptyLevel() {
         Level sut = new Level();
 
-        Assert.assertEquals(0, sut.getLines().length);
+        Assert.assertEquals(0, sut.getWalls().length);
     }
 
     @Test
     public void getLinesShouldReturnOneLine() {
         Level sut = new Level();
 
-        sut.addLine(mock(Line.class));
+        sut.addWall(mock(Wall.class));
 
-        Assert.assertEquals(1, sut.getLines().length);
+        Assert.assertEquals(1, sut.getWalls().length);
     }
 }

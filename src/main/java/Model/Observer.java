@@ -5,8 +5,8 @@ import javafx.geometry.Point2D;
 public class Observer {
 
 
-    private Point2D position = new Point2D(0,0);
-    private Point2D direction = new Point2D(0.75,0.75);
+    private Point2D position = new Point2D(0.1,0.5);
+    private Point2D direction = new Point2D(1,0);
 
     public Observer() {
         direction = direction.normalize();

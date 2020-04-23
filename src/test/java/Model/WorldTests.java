@@ -9,6 +9,6 @@ public class WorldTests {
     public void shouldHaveLinesInLevel() {
         World sut = new World();
 
-        Assert.assertEquals(3, sut.getLevel().getLines().length);
+        Assert.assertEquals(3, sut.getLevel().getWalls().length);
     }
 }
