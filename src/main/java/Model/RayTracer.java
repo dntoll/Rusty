@@ -26,11 +26,13 @@ public class RayTracer {
         double directionX = Math.cos(rayDirection);
         double directionY = Math.sin(rayDirection);
 
-        var endPos = new Point2D(position.getX() + directionX * viewDistance,
-                position.getY() + directionY * viewDistance );
+        var endPos = new Point2D(position.getX() + directionX,
+                position.getY() + directionY);
+
+        var normalizedEnd = endPos.normalize();
 
 
-        return new Ray(position, endPos);
+        return new Ray(position, normalizedEnd.multiply(viewDistance));
     }
 
     public RayWorldContact traceClosest(Ray ray, Wall ignore) {
@@ -63,9 +65,9 @@ public class RayTracer {
 
         tracePrimaryLights(contact, lights, model);
 
-       /* if (depth < 3) {
+        if (depth < 2) {
             traceSecondaryLights(contact, depth, model);
-        }*/
+        }
 
         return model.getIntensity();
     }
@@ -76,7 +78,7 @@ public class RayTracer {
             Ray secondaryRay = getRay(contact.getPosition(), contact.getNormal(), Math.PI / 2.0, 1.0, i, 10);
             RayWorldContact secondaryContact = traceClosest(secondaryRay, contact.getWall());
             if (secondaryContact.hasContact()) {
-                double lightIntensity = 0. * getIntensity(secondaryContact, depth + 1);
+                double lightIntensity = 0.01 * getIntensity(secondaryContact, depth + 1);
                 model.getSecondaryLight(lightIntensity, secondaryContact.getPosition(), secondaryContact.getNormal(), secondaryRay.getStart());
             }
 

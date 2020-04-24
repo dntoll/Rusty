@@ -37,6 +37,19 @@ public class Level {
         addWall(new Wall(topRight, bottomRight, material));
     }
 
+    public void addCircle(Point2D center, double radius, int increments, Material material) {
+        assert(increments > 3);
+
+        var radiansPerIncrement = Math.PI * 2.0 / (double)increments;
+        Point2D lastPos = center.add(radius, 0);
+        for (int i = 1; i <= increments; i++) {
+            var angle = radiansPerIncrement * (double)i;
+            Point2D nextPos = center.add(Math.cos(angle) * radius, Math.sin(angle) * radius);
+            addWall(new Wall(lastPos, nextPos, material));
+            lastPos = nextPos;
+        }
+    }
+
     public boolean lineOfSight(Ray ray, Wall ignore) {
 
         for (Wall wall : getWalls() ) {

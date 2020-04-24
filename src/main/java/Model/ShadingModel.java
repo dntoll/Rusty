@@ -54,7 +54,7 @@ public class ShadingModel {
     }
 
     public void getSecondaryLight(double lightIntensity, Point2D positionAtSecondary, Point2D normalAtSecondary, Point2D primaryPosition) {
-        addLight(positionAtSecondary, lightIntensity, lightIntensity*0.1, lightIntensity*0.1, 10.0 );
+       I += lightIntensity;
     }
 
     public double getIntensity() {

@@ -50,7 +50,12 @@ public class RayTraceView {
                 Point2D contactModelPos = contact.getPosition();
                 var contactWindowPos = camera.toLevelView(contactModelPos);
                 gc.strokeLine(observerWindowCenterPos.getX(), observerWindowCenterPos.getY(), contactWindowPos.getX(), contactWindowPos.getY());
-                gc.strokeLine(200 + (200-x), 0, 200 + (200-x), 200);
+
+                double distance = world.getObserver().getPosition().distance(contact.getPosition());
+                distance *= 0.25/fov;
+
+                gc.strokeLine(200 + (200-x), 0, 200 + (200-x), 200-distance*200);
+
 
             } else {
                 gc.setStroke(Color.BLACK);

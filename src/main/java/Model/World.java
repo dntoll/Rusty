@@ -14,15 +14,14 @@ public class World {
         var leftMiddle = new Point2D(0,0.5);
         var bottomMiddle = new Point2D(0.5,1);
 
-        var material = new Material(1,1,1,1);
-        level.addWall(new Wall(middle, rightMiddle, material));
-        level.addWall(new Wall(middle, bottomMiddle, material));
-        level.addWall(new Wall(leftMiddle, bottomMiddle, material));
-
-        level.addBox(new Point2D(0.75,0.25), new Point2D(0.85,0.3), material);
+        var material = new Material(1,1,1,10);
         level.addBox(new Point2D(0.0,0.0), new Point2D(1.0,1.0), material);
 
-        level.addLight(new Light(new Point2D(0.4, 0.8), 0.0,1.3,0.3, 1));
+        level.addBox(new Point2D(0.75,0.25), new Point2D(0.85,0.3), material);
+        level.addCircle(new Point2D(0.75,0.7), 0.05, 60, material);
+
+
+        level.addLight(new Light(new Point2D(0.1, 0.8), 0.0,1.3,0.3, 2));
     }
 
 
