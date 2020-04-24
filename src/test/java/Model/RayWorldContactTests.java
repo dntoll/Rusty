@@ -47,10 +47,18 @@ public class RayWorldContactTests {
 
     @Test
     public void getWallThroughConstructor() {
-        var wall = new Wall(null, null);
+        var wall = mock(Wall.class);
         var sut = new RayWorldContact(true, null, null, wall);
         Assert.assertSame(wall, sut.getWall());
     }
+
+    @Test
+    public void getRayThroughConstructor() {
+        var ray = mock(Ray.class);
+        var sut = new RayWorldContact(true, null, ray, null);
+        Assert.assertSame(ray, sut.getRay());
+    }
+
 
 
     @Test
@@ -99,6 +107,55 @@ public class RayWorldContactTests {
         var actual = sut.isCloser(other);
 
         Assert.assertFalse(actual);
+    }
+
+    @Test
+    public void shouldReturnNormalLeft() {
+        var verticalWall = new Wall(new Point2D(1, 0), new Point2D(1, 1), null); //
+        var horizontalRayFromLeft = new Ray(new Point2D(0, 0.5), new Point2D(2, 0.5));
+
+        var sut = new RayWorldContact(false, null, horizontalRayFromLeft, verticalWall);
+
+        Assert.assertEquals(-1.0, sut.getNormal().getX(), 0.01);
+        Assert.assertEquals(0.0, sut.getNormal().getY(), 0.01);
+    }
+
+    @Test
+    public void shouldReturnNormalRight() {
+        var verticalWall = new Wall(new Point2D(1, 0), new Point2D(1, 1), null); //
+        var horizontalRayFromRight = new Ray(new Point2D(2, 0.5), new Point2D(0, 0.5));
+
+        var sut = new RayWorldContact(false, null, horizontalRayFromRight, verticalWall);
+
+        Assert.assertEquals(1.0, sut.getNormal().getX(), 0.01);
+        Assert.assertEquals(0.0, sut.getNormal().getY(), 0.01);
+
+    }
+
+    @Test
+    public void shouldReflectBackFromLeft() {
+        var verticalWall = new Wall(new Point2D(1, 0), new Point2D(1, 1), null); //
+        var horizontalRayFromLeft = new Ray(new Point2D(0, 0.5), new Point2D(1, 0.5));
+
+        var sut = new RayWorldContact(false, null, horizontalRayFromLeft, verticalWall);
+
+        var actual = sut.getReflection();
+        Assert.assertEquals(-1.0, actual.getX(), 0.01);
+        Assert.assertEquals(0.0, actual.getY(), 0.01);
+    }
+
+    @Test
+    public void shouldReflectBackFromBottomRight() {
+        var verticalWall = new Wall(new Point2D(1, 0), new Point2D(1, 1), null); //
+        var rayFromBottomRight = new Ray(new Point2D(2, 1), new Point2D(1, 0));
+
+        var sut = new RayWorldContact(false, null, rayFromBottomRight, verticalWall);
+
+        var actual = sut.getReflection();
+
+
+        Assert.assertEquals(-rayFromBottomRight.getVector().getX(), actual.getX(), 0.01);
+        Assert.assertEquals(rayFromBottomRight.getVector().getY(), actual.getY(), 0.01);
     }
 
 }

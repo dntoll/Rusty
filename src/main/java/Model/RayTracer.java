@@ -61,39 +61,36 @@ public class RayTracer {
 
         ShadingModel model = new ShadingModel(material, contact.getPosition(), contact.getNormal(), contact.getRay().getStart());
 
-        for (Light light : lights ) {
+        tracePrimaryLights(contact, lights, model);
 
-            if (lineOfSight(contact.getPosition(), light.getPosition(), contact.getWall())) {
-                model.addDirectLight(light);
-            }
-        }
-
-        /*if (depth < 2) {
-            //Reflections
-            for (int i = 0; i < 100; i++) {
-                Ray secondaryRay = getRay(contact.getPosition(), contact.getNormal(), Math.PI / 2.0, 1.0, i, 10);
-                RayWorldContact secondaryContact = traceClosest(secondaryRay, contact.getWall());
-                if (secondaryContact.hasContact()) {
-                    double lightIntensity = 0.5 * getIntensity(secondaryContact, depth + 1);
-                    model.getSecondaryLight(lightIntensity, secondaryContact.getPosition(), secondaryContact.getNormal(), secondaryRay.getStart());
-                }
-
-            }
+       /* if (depth < 3) {
+            traceSecondaryLights(contact, depth, model);
         }*/
 
         return model.getIntensity();
     }
 
-    private boolean lineOfSight(Point2D start, Point2D end, Wall ignore) {
-        var ray = new Ray(start, end);
-        for (Wall wall : level.getWalls() ) {
-            if (wall != ignore) {
-                var newContact = ray.collides(wall);
-                if (newContact.hasContact()) {
-                    return false;
-                }
+    private void traceSecondaryLights(RayWorldContact contact, int depth, ShadingModel model) {
+        //Reflections
+        for (int i = 0; i < 10; i++) {
+            Ray secondaryRay = getRay(contact.getPosition(), contact.getNormal(), Math.PI / 2.0, 1.0, i, 10);
+            RayWorldContact secondaryContact = traceClosest(secondaryRay, contact.getWall());
+            if (secondaryContact.hasContact()) {
+                double lightIntensity = 0. * getIntensity(secondaryContact, depth + 1);
+                model.getSecondaryLight(lightIntensity, secondaryContact.getPosition(), secondaryContact.getNormal(), secondaryRay.getStart());
+            }
+
+        }
+    }
+
+    private void tracePrimaryLights(RayWorldContact contact, Light[] lights, ShadingModel model) {
+        for (Light light : lights ) {
+            var ray = new Ray(contact.getPosition(), light.getPosition());
+            if (level.lineOfSight(ray, contact.getWall())) {
+                model.addDirectLight(light);
             }
         }
-        return true;
     }
+
+
 }

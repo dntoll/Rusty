@@ -65,7 +65,9 @@ public class RayWorldContact {
         //https://www.gamedev.net/forums/topic/510581-2d-reflection/
         var N = getNormal();
         var V = ray.getVector();
-        return N.multiply(2.0 * V.dotProduct(N)).subtract(V);
+        var vdn = 2.0 * V.dotProduct(N);
+        var temp = N.multiply(vdn);
 
+        return V.subtract(temp);
     }
 }

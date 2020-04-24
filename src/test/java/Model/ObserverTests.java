@@ -6,7 +6,7 @@ import org.junit.Test;
 
 public class ObserverTests {
     @Test
-    public void shouldGetTheSettedPosition() {
+    public void shouldGetTheSetPosition() {
         Observer sut = new Observer();
 
         double x = 0.5;
@@ -19,7 +19,7 @@ public class ObserverTests {
     }
 
     @Test
-    public void shouldGetTheSettedDirectionButNormalized() {
+    public void shouldGetTheSetDirectionButNormalized() {
         Observer sut = new Observer();
 
         double x = 0.5;

@@ -36,4 +36,17 @@ public class Level {
         addWall(new Wall(bottomLeft, bottomRight, material));
         addWall(new Wall(topRight, bottomRight, material));
     }
+
+    public boolean lineOfSight(Ray ray, Wall ignore) {
+
+        for (Wall wall : getWalls() ) {
+            if (wall != ignore) {
+                var newContact = ray.collides(wall);
+                if (newContact.hasContact()) {
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
 }

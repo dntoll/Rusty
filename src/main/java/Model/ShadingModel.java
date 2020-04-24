@@ -27,24 +27,19 @@ public class ShadingModel {
         var Lm = lightPosition.subtract(position); //towards the light
         Lm = Lm.normalize();
 
-        var N = normal;
-        var Ks = mat.getSpecular();
-        var Kd = mat.getDiffuse();
-        var Ka = mat.getAmbient();
-        var shininess = mat.getShininess();
-
         //https://www.gamedev.net/forums/topic/510581-2d-reflection/
-        var doubleProjectionOnNormal = 2.0 * Lm.dotProduct(N);
-        var toBeRemoved = N.multiply(doubleProjectionOnNormal);
-        var R = toBeRemoved.subtract(Lm).normalize();
+        var doubleProjectionOnNormal = 2.0 * Lm.dotProduct(normal);
+        var toBeRemoved = normal.multiply(doubleProjectionOnNormal);
+        var R = Lm.subtract(toBeRemoved);
+        R = R.normalize();
 
         var V = viewerPos.subtract(position).normalize(); //towards the viewer
 
-        var ambientComponent = Ka * lightAmbient;
-        var diffuseComponent = Kd * Lm.dotProduct(N) * lightDiffuse;
+        var ambientComponent = mat.getAmbient() * lightAmbient;
+        var diffuseComponent = mat.getDiffuse() * Lm.dotProduct(normal) * lightDiffuse;
 
         var rdotV = R.dotProduct(V);
-        var specularComponent = Ks * Math.pow(rdotV, shininess)*lightShininess;
+        var specularComponent = mat.getSpecular() * Math.pow(rdotV, mat.getShininess())*lightShininess;
 
         //https://www.tomdalling.com/blog/modern-opengl/07-more-lighting-ambient-specular-attenuation-gamma/
         double distanceToLight = position.distance(lightPosition);
@@ -59,7 +54,7 @@ public class ShadingModel {
     }
 
     public void getSecondaryLight(double lightIntensity, Point2D positionAtSecondary, Point2D normalAtSecondary, Point2D primaryPosition) {
-        addLight(positionAtSecondary, lightIntensity*0.1, lightIntensity*0.1, lightIntensity*0.1, 10.0 );
+        addLight(positionAtSecondary, lightIntensity, lightIntensity*0.1, lightIntensity*0.1, 10.0 );
     }
 
     public double getIntensity() {

@@ -11,6 +11,7 @@ public class RayTracerTests {
     private Observer o;
     private RayTracer sut;
     private Level level;
+    private Point2D direction, position;
 
     Ray hittingRay;
     RayWorldContact firstContactHit, secondContactHit, contactMiss;
@@ -25,9 +26,8 @@ public class RayTracerTests {
         when(level.getWalls()).thenReturn(new Wall[]{firstWall, secondWall});
 
 
-        o = new Observer();
-        o.setDirection(new Point2D(1,0));
-        o.setPosition(new Point2D(0,0));
+        direction = new Point2D(1,0);
+        position = new Point2D(0,0);
 
         sut = new RayTracer(level);
         hittingRay = mock(Ray.class);
@@ -48,28 +48,28 @@ public class RayTracerTests {
 
     @Test
     public void rayStartShouldBeObserverPosition() {
-        Ray actual = sut.getRay(o, Math.PI, 1,0, 10);
+        Ray actual = sut.getRay(position, direction, Math.PI, 1,0, 10);
         Assert.assertEquals(0.0, actual.getStart().getX(), 0.01);
         Assert.assertEquals(0.0, actual.getStart().getY(), 0.01);
     }
 
     @Test
     public void rayShouldBeTop() {
-        Ray actual = sut.getRay(o, Math.PI, 1,0, 10);
+        Ray actual = sut.getRay(position, direction, Math.PI, 1,0, 10);
         Assert.assertEquals(0.0, actual.getEnd().getX(), 0.1);
         Assert.assertEquals(1.0, actual.getEnd().getY(), 0.1);
     }
 
     @Test
     public void rayShouldBeBottom() {
-        Ray actual = sut.getRay(o, Math.PI, 1,10, 10);
+        Ray actual = sut.getRay(position, direction, Math.PI, 1,10, 10);
         Assert.assertEquals(0.0, actual.getEnd().getX(), 0.1);
         Assert.assertEquals(-1.0, actual.getEnd().getY(), 0.1);
     }
 
     @Test
     public void rayShouldBeRight() {
-        Ray actual = sut.getRay(o, Math.PI, 1,5, 10);
+        Ray actual = sut.getRay(position, direction, Math.PI, 1,5, 10);
         Assert.assertEquals(1.0, actual.getEnd().getX(), 0.1);
         Assert.assertEquals(0.0, actual.getEnd().getY(), 0.1);
     }
@@ -81,7 +81,7 @@ public class RayTracerTests {
 
         when(secondContactHit.isCloser(any())).thenReturn(false);
 
-        var actual = sut.traceClosest(hittingRay);
+        var actual = sut.traceClosest(hittingRay, null);
 
         Assert.assertSame(firstContactHit, actual);
     }
@@ -95,7 +95,7 @@ public class RayTracerTests {
         when(secondContactHit.isCloser(any())).thenReturn(true);
 
 
-        var actual = sut.traceClosest(hittingRay);
+        var actual = sut.traceClosest(hittingRay, null);
 
         Assert.assertSame(secondContactHit, actual);
     }
@@ -108,7 +108,7 @@ public class RayTracerTests {
         when(secondContactHit.isCloser(any())).thenReturn(false);
         when(firstContactHit.isCloser(any())).thenReturn(true);
 
-        var actual = sut.traceClosest(hittingRay);
+        var actual = sut.traceClosest(hittingRay, null);
 
         Assert.assertSame(firstContactHit, actual);
     }
@@ -119,8 +119,13 @@ public class RayTracerTests {
         when(hittingRay.collides(firstWall)).thenReturn(contactMiss);
         when(hittingRay.collides(secondWall)).thenReturn(contactMiss);
 
-        var actual = sut.traceClosest(hittingRay);
+        var actual = sut.traceClosest(hittingRay, null);
         Assert.assertFalse(actual.hasContact());
+    }
+
+    @Test
+    public void shouldTryAllWalls() {
+
     }
 
 
